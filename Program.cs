@@ -19,7 +19,8 @@ namespace ConsoleApp1
             var top = Application.Top;
 
             // Creates the top-level window to show
-            var win = new Window(new Rect(0, 1, top.Frame.Width, top.Frame.Height - 1), "MyApp");
+            var rect = new Rect(0, 1, top.Frame.Width, top.Frame.Height - 1);
+            var win = new Window(rect, "MyApp");
             top.Add(win);
 
             // Creates a menubar, the item "New" has a help menu.
@@ -27,7 +28,7 @@ namespace ConsoleApp1
             new MenuBarItem ("_File", new MenuItem [] {
                 new MenuItem ("_New", "Creates new file", null),
                 new MenuItem ("_Close", "", null),
-                new MenuItem ("_Quit", "", null)
+                new MenuItem ("_Quit", "",  ()=> MessageBox.ErrorQuery (50, 5, "Error", "There is nothing to close", "Ok"))
             
             }),
             new MenuBarItem ("_Edit", new MenuItem [] {
@@ -46,9 +47,10 @@ namespace ConsoleApp1
                     new TextField(14, 4, 40, "") { Secret = true },
                     new CheckBox(3, 6, "Remember me"),
                     new RadioGroup(3, 8, new[] { "_Personal", "_Company" }),
-                    new Button(3, 14, "Ok"),
+                    new Button(3, 14, "Ok",true),
                     new Button(10, 14, "Cancel"),
                     new Label(3, 18, "Press ESC and 9 to activate the menubar"));
+            
 
             Application.Run();
         }
