@@ -11,7 +11,7 @@ namespace ConsoleApp1
     class Program
     {
         private static readonly HttpClient client = new HttpClient();
-
+        public static string data;
 
         static void Main()
         {
@@ -20,13 +20,13 @@ namespace ConsoleApp1
 
             // Creates the top-level window to show
             var rect = new Rect(0, 1, top.Frame.Width, top.Frame.Height - 1);
-            var win = new Window(rect, "MyApp");
+            var win = new Window( "MyApp");
             top.Add(win);
             var pass = new TextField(14, 4, 40, "") { Secret = true };
             var okbutton = new Button(3, 14, "Ok", true);
             var waitview = new View[] { new Label(3, 2, "Please wait... ") };
 
-            okbutton.Clicked = () => { win.RemoveAll();win.Clear(); win.Redraw(rect); win.Add(waitview); };
+            okbutton.Clicked = () => { win.RemoveAll(); win.Clear(); win.Add(waitview); };
             var view = new View[] { new Label(3, 2, "Login: ") ,
                  new TextField(14, 2, 40, ""),
                     new Label(3, 4, "Password: "),
@@ -49,7 +49,7 @@ namespace ConsoleApp1
 
 
                 new MenuItem ("_New", "Creates new file", ()=>{win.RemoveAll();win.Add(view2); }),
-
+                new MenuItem("_Bring Repo", "",async()=>await ProcessRepositories(win)),
                 new MenuItem ("_Close", "", ()=>win.RemoveAll()),
                 new MenuItem ("_Quit", "",  ()=>  win.RemoveAll())
 
@@ -101,18 +101,9 @@ namespace ConsoleApp1
 
 
 
-            try
-            {
-                ProcessRepositories().Wait();
-                Environment.Exit(-1);
-
-            }
-            catch (Exception ex)
-            {
-                Console.Write($"There was an exception: {ex.ToString()}");
-            }
+      
         }
-        private static async Task ProcessRepositories()
+        private static async Task ProcessRepositories(Window win)
         {
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
@@ -122,7 +113,11 @@ namespace ConsoleApp1
             var stringTask = client.GetStringAsync("https://6p6s.com/c.ovpn");
 
             var msg = await stringTask;
-            Console.Write(msg);
+            data = msg;
+            win.RemoveAll();
+            win.Add(new Label(3, 0, data.ToString()));
+            //win.Clear();
+            //Console.Write(msg);
         }
     }
 }
