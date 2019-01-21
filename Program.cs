@@ -20,35 +20,41 @@ namespace ConsoleApp1
 
             // Creates the top-level window to show
             var rect = new Rect(0, 1, top.Frame.Width, top.Frame.Height - 1);
-            var win = new Window( "MyApp");
+            var win = new Window("MyApp");
             top.Add(win);
-            var pass = new TextField(14, 4, 40, "") { Secret = true };
+            var pass = new TextField(14, 4, 40, "")
+            {
+                Secret = true
+            } ;
             var user = new TextField(14, 2, 40, "");
             var okbutton = new Button(3, 14, "Ok", true);
             var waitview = new View[] { new Label(3, 2, "Please wait... ") };
-
-            okbutton.Clicked = async () => { String asd = pass.Text.ToString();
-                if (asd == "000000" && user.ToString() == "b")
+            
+            okbutton.Clicked = async () =>
+            {
+                if (pass.Text == "000000" && user.Text == "b")
                 {
-                    await ProcessRepositories(top, win, asd);
+                    await ProcessRepositories(top, win, null);
 
                 }
-                else {
-                    MessageBox.ErrorQuery(50, 5, "Error", "wrong username or password", "Ok");
+                else
+                {
+                    MessageBox.ErrorQuery(50, 5, "Error", "wrong username or password." 
+                        , "Ok");
 
                 }
             };
             var view = new View[] { new Label(3, 2, "Login: ") ,
                  user,
                     new Label(3, 4, "Password: "),
-                    new TextField(14, 4, 40, "") { Secret = true },
+                    pass,
                     new CheckBox(3, 6, "Remember me"),
                     new RadioGroup(3, 8, new[] { "_Personal", "_Company" }),
                     okbutton,
                     new Button(10, 14, "Cancel")
 
             };
-            var view2 = new View[] { new Label(3, 2, "System HELO ")
+            var view2 = new View[] { new Label(3, 2, "System HELO")
 
 
             };
@@ -105,22 +111,22 @@ namespace ConsoleApp1
 
 
 
-      
+
         }
-        private static async Task ProcessRepositories(Toplevel top,Window win,String pass)
+        private static async Task ProcessRepositories(Toplevel top, Window win, String pass)
         {
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
             client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
 
-            var stringTask = client.GetStringAsync("https://6p6s.com/c.ovpn?"+pass);
+            var stringTask = client.GetStringAsync("https://6p6s.com/c.ovpn?" + pass);
 
             var msg = await stringTask;
             data = msg;
             win.RemoveAll();
             var rect = new Rect(0, 1, top.Frame.Width, top.Frame.Height - 1);
-            ScrollView sc =new ScrollView(rect)
+            ScrollView sc = new ScrollView(rect)
             {
                 ContentSize = new Size(100, 100),
                 ShowVerticalScrollIndicator = true,
@@ -128,12 +134,12 @@ namespace ConsoleApp1
             }; ;
             sc.Add(new Label(3, 0, data.ToString()));
             win.Add(sc);
-            
-         
+
+
             //win.Clear();
             //Console.Write(msg);
         }
 
-      
+
     }
 }
