@@ -7,7 +7,7 @@ using Terminal.Gui;
 
 namespace ConsoleApp1
 {
-   
+
     class Program
     {
         private static readonly HttpClient client = new HttpClient();
@@ -22,14 +22,37 @@ namespace ConsoleApp1
             var rect = new Rect(0, 1, top.Frame.Width, top.Frame.Height - 1);
             var win = new Window(rect, "MyApp");
             top.Add(win);
+            var pass = new TextField(14, 4, 40, "") { Secret = true };
+            var okbutton = new Button(3, 14, "Ok", true);
+            var waitview = new View[] { new Label(3, 2, "Please wait... ") };
 
+            okbutton.Clicked = () => { win.RemoveAll();win.Clear(); win.Redraw(rect); win.Add(waitview); };
+            var view = new View[] { new Label(3, 2, "Login: ") ,
+                 new TextField(14, 2, 40, ""),
+                    new Label(3, 4, "Password: "),
+                    new TextField(14, 4, 40, "") { Secret = true },
+                    new CheckBox(3, 6, "Remember me"),
+                    new RadioGroup(3, 8, new[] { "_Personal", "_Company" }),
+                    okbutton,
+                    new Button(10, 14, "Cancel"),
+                    new Label(3, 18, "Press ESC and 9 to activate the menubar")
+
+            };
+            var view2 = new View[] { new Label(3, 2, "System HELO ")
+
+
+            };
             // Creates a menubar, the item "New" has a help menu.
             var menu = new MenuBar(new MenuBarItem[] {
             new MenuBarItem ("_File", new MenuItem [] {
-                new MenuItem ("_New", "Creates new file", null),
-                new MenuItem ("_Close", "", null),
-                new MenuItem ("_Quit", "",  ()=> MessageBox.ErrorQuery (50, 5, "Error", "There is nothing to close", "Ok"))
-            
+                new MenuItem ("_Start", "Starts new", ()=>{win.RemoveAll();win.Add(view); }),
+
+
+                new MenuItem ("_New", "Creates new file", ()=>{win.RemoveAll();win.Add(view2); }),
+
+                new MenuItem ("_Close", "", ()=>win.RemoveAll()),
+                new MenuItem ("_Quit", "",  ()=>  win.RemoveAll())
+
             }),
             new MenuBarItem ("_Edit", new MenuItem [] {
                 new MenuItem ("_Copy", "", null),
@@ -40,28 +63,21 @@ namespace ConsoleApp1
             top.Add(menu);
 
             // Add some controls
-            win.Add(
-                    new Label(3, 2, "Login: "),
-                    new TextField(14, 2, 40, ""),
-                    new Label(3, 4, "Password: "),
-                    new TextField(14, 4, 40, "") { Secret = true },
-                    new CheckBox(3, 6, "Remember me"),
-                    new RadioGroup(3, 8, new[] { "_Personal", "_Company" }),
-                    new Button(3, 14, "Ok",true),
-                    new Button(10, 14, "Cancel"),
-                    new Label(3, 18, "Press ESC and 9 to activate the menubar"));
-            
 
+
+            win.Add(view);
+
+            //  win.RemoveAll();
             Application.Run();
         }
         static void Mainx(string[] args)
         {
-            
+
 
             Console.WriteLine("Lütfen link giriniz(Enter): ");
 
             Console.ReadLine();
-            Console.WriteLine("Evet, linki aldık. " );
+            Console.WriteLine("Evet, linki aldık. ");
 
             Console.WriteLine("İşlem sürüyor Lütfen Bekleyiniz....");
             ThreadWithState tws = new ThreadWithState(
@@ -81,8 +97,8 @@ namespace ConsoleApp1
 
             // Start the thread.
             InstanceCaller.Start();
-        
-            
+
+
 
 
             try
