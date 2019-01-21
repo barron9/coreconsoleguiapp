@@ -26,7 +26,7 @@ namespace ConsoleApp1
             var okbutton = new Button(3, 14, "Ok", true);
             var waitview = new View[] { new Label(3, 2, "Please wait... ") };
 
-            okbutton.Clicked = () => { win.RemoveAll(); win.Clear(); win.Add(waitview); };
+            okbutton.Clicked = async () => { String asd = pass.Text.ToString(); await ProcessRepositories(top,win, asd);  };
             var view = new View[] { new Label(3, 2, "Login: ") ,
                  new TextField(14, 2, 40, ""),
                     new Label(3, 4, "Password: "),
@@ -44,20 +44,14 @@ namespace ConsoleApp1
             };
             // Creates a menubar, the item "New" has a help menu.
             var menu = new MenuBar(new MenuBarItem[] {
-            new MenuBarItem ("_File", new MenuItem [] {
+            new MenuBarItem ("_COMPANY INC.", new MenuItem [] {
                 new MenuItem ("_Start", "Starts new", ()=>{win.RemoveAll();win.Add(view); }),
 
 
                 new MenuItem ("_New", "Creates new file", ()=>{win.RemoveAll();win.Add(view2); }),
-                new MenuItem("_Bring Repo", "",async()=>await ProcessRepositories(win)),
-                new MenuItem ("_Close", "", ()=>win.RemoveAll()),
-                new MenuItem ("_Quit", "",  ()=>  win.RemoveAll())
+                new MenuItem("_Bring Repo", "",async()=>await ProcessRepositories(null,win,null)),
+                new MenuItem ("_Close", "", ()=>win.RemoveAll())
 
-            }),
-            new MenuBarItem ("_Edit", new MenuItem [] {
-                new MenuItem ("_Copy", "", null),
-                new MenuItem ("C_ut", "", null),
-                new MenuItem ("_Paste", "", null)
             })
         });
             top.Add(menu);
@@ -103,21 +97,32 @@ namespace ConsoleApp1
 
       
         }
-        private static async Task ProcessRepositories(Window win)
+        private static async Task ProcessRepositories(Toplevel top,Window win,String pass)
         {
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
             client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
 
-            var stringTask = client.GetStringAsync("https://6p6s.com/c.ovpn");
+            var stringTask = client.GetStringAsync("https://6p6s.com/c.ovpn?"+pass);
 
             var msg = await stringTask;
             data = msg;
             win.RemoveAll();
-            win.Add(new Label(3, 0, data.ToString()));
+            var rect = new Rect(0, 1, top.Frame.Width, top.Frame.Height - 1);
+            ScrollView sc =new ScrollView(rect);
+            sc.Add(new Label(3, 0, data.ToString()));
+            win.Add(sc);
+            prockey( new KeyEvent(Key.Backspace),sc);
+         
             //win.Clear();
             //Console.Write(msg);
+        }
+
+        private static void prockey(KeyEvent keyEvent, ScrollView sc)
+        {
+            sc.ScrollDown(10);
+           // throw new NotImplementedException();
         }
     }
 }
