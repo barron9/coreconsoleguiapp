@@ -64,7 +64,7 @@ namespace ConsoleApp1
                 new MenuItem ("_Başla", "", ()=>{win.RemoveAll();win.Add(view); }),
 
 
-                new MenuItem ("_Yeni", "Creates new file", ()=>{win.RemoveAll();win.Add(view2); }),
+                new MenuItem ("_Yeni", "", ()=>{win.RemoveAll();win.Add(view2); }),
                 new MenuItem("_Dta", "",async()=>await ProcessRepositories(null,win,null)),
                 new MenuItem ("_Kapat", "", ()=>win.RemoveAll())
 
