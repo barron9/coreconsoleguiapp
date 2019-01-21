@@ -23,19 +23,29 @@ namespace ConsoleApp1
             var win = new Window( "MyApp");
             top.Add(win);
             var pass = new TextField(14, 4, 40, "") { Secret = true };
+            var user = new TextField(14, 2, 40, "");
             var okbutton = new Button(3, 14, "Ok", true);
             var waitview = new View[] { new Label(3, 2, "Please wait... ") };
 
-            okbutton.Clicked = async () => { String asd = pass.Text.ToString(); await ProcessRepositories(top,win, asd);  };
+            okbutton.Clicked = async () => { String asd = pass.Text.ToString();
+                if (asd == "000000" && user.ToString() == "b")
+                {
+                    await ProcessRepositories(top, win, asd);
+
+                }
+                else {
+                    MessageBox.ErrorQuery(50, 5, "Error", "wrong username or password", "Ok");
+
+                }
+            };
             var view = new View[] { new Label(3, 2, "Login: ") ,
-                 new TextField(14, 2, 40, ""),
+                 user,
                     new Label(3, 4, "Password: "),
                     new TextField(14, 4, 40, "") { Secret = true },
                     new CheckBox(3, 6, "Remember me"),
                     new RadioGroup(3, 8, new[] { "_Personal", "_Company" }),
                     okbutton,
-                    new Button(10, 14, "Cancel"),
-                    new Label(3, 18, "Press ESC and 9 to activate the menubar")
+                    new Button(10, 14, "Cancel")
 
             };
             var view2 = new View[] { new Label(3, 2, "System HELO ")
