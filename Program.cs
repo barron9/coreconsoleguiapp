@@ -110,19 +110,20 @@ namespace ConsoleApp1
             data = msg;
             win.RemoveAll();
             var rect = new Rect(0, 1, top.Frame.Width, top.Frame.Height - 1);
-            ScrollView sc =new ScrollView(rect);
+            ScrollView sc =new ScrollView(rect)
+            {
+                ContentSize = new Size(100, 100),
+                ShowVerticalScrollIndicator = true,
+                ShowHorizontalScrollIndicator = true
+            }; ;
             sc.Add(new Label(3, 0, data.ToString()));
             win.Add(sc);
-            prockey( new KeyEvent(Key.Backspace),sc);
+            
          
             //win.Clear();
             //Console.Write(msg);
         }
 
-        private static void prockey(KeyEvent keyEvent, ScrollView sc)
-        {
-            sc.ScrollDown(10);
-           // throw new NotImplementedException();
-        }
+      
     }
 }
