@@ -20,14 +20,14 @@ namespace ConsoleApp1
 
             // Creates the top-level window to show
             var rect = new Rect(0, 1, top.Frame.Width, top.Frame.Height - 1);
-            var win = new Window("MyApp");
+            var win = new Window("TEST");
             top.Add(win);
             var pass = new TextField(14, 4, 40, "")
             {
                 Secret = true
             } ;
             var user = new TextField(14, 2, 40, "");
-            var okbutton = new Button(3, 14, "Ok", true);
+            var okbutton = new Button(3, 20, "TMM",true);
             var waitview = new View[] { new Label(3, 2, "Please wait... ") };
             
             okbutton.Clicked = async () =>
@@ -39,19 +39,19 @@ namespace ConsoleApp1
                 }
                 else
                 {
-                    MessageBox.ErrorQuery(50, 5, "Error", "wrong username or password." 
-                        , "Ok");
+                    MessageBox.ErrorQuery(50, 5, "HATA", "HATALI GİRİŞ" 
+                        , "TMM");
 
                 }
             };
-            var view = new View[] { new Label(3, 2, "Login: ") ,
+            var view = new View[] { new Label(3, 2, "MÜŞTERİ NO: ") ,
                  user,
-                    new Label(3, 4, "Password: "),
+                    new Label(3, 4, "PAROLA: "),
                     pass,
-                    new CheckBox(3, 6, "Remember me"),
-                    new RadioGroup(3, 8, new[] { "_Personal", "_Company" }),
+                    //new CheckBox(3, 6, "Remember me"),
+                    new RadioGroup(3, 8, new[] { "_VPN DATA", "_BIST DATA", "_REQUEST", "_LOAD","_REDISTEST","ORACLETEST" }),
                     okbutton,
-                    new Button(10, 14, "Cancel")
+                    new Button(10, 20, "iPTAL")
 
             };
             var view2 = new View[] { new Label(3, 2, "System HELO")
@@ -60,13 +60,13 @@ namespace ConsoleApp1
             };
             // Creates a menubar, the item "New" has a help menu.
             var menu = new MenuBar(new MenuBarItem[] {
-            new MenuBarItem ("_COMPANY INC.", new MenuItem [] {
-                new MenuItem ("_Start", "Starts new", ()=>{win.RemoveAll();win.Add(view); }),
+            new MenuBarItem ("_SiSTEM", new MenuItem [] {
+                new MenuItem ("_Başla", "", ()=>{win.RemoveAll();win.Add(view); }),
 
 
-                new MenuItem ("_New", "Creates new file", ()=>{win.RemoveAll();win.Add(view2); }),
-                new MenuItem("_Bring Repo", "",async()=>await ProcessRepositories(null,win,null)),
-                new MenuItem ("_Close", "", ()=>win.RemoveAll())
+                new MenuItem ("_Yeni", "Creates new file", ()=>{win.RemoveAll();win.Add(view2); }),
+                new MenuItem("_Dta", "",async()=>await ProcessRepositories(null,win,null)),
+                new MenuItem ("_Kapat", "", ()=>win.RemoveAll())
 
             })
         });
